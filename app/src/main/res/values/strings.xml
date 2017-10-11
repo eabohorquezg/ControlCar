@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ControlCar</string>
+    <string name="kmh">kmh</string>
+    <string name="toggle_turn_on">Turn off !</string>
+    <string name="toggle_turn_off">Turn on !</string>
+    <string name="longitude">longitude: </string>
+    <string name="latitude">latitude: </string>
+    <string name="unknownLongLat">unknown</string>
+</resources>
