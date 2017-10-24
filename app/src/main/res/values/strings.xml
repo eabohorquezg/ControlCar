@@ -6,4 +6,10 @@
     <string name="longitude">longitude: </string>
     <string name="latitude">latitude: </string>
     <string name="unknownLongLat">unknown</string>
+    <string name="accept_terms">Al ingresar estás aceptando los términos y condiciones de ControlCar, así como su política de seguridad y de tratamiento de datos.</string>
+    <string name="sign_in_with_google">Ingresar con Google</string>
+    <string name="terms">Términos y condiciones</string>
+    <string name="google_auth_fail">No nos hemos podido conectar con tus servicios de Google. Intenta en unos minutos por fa.</string>
+    <string name="firebase_auth_fail">Hemos tenido problemas al autenticarte en nuestros servidores. Seguro fue cosa del internet o algo temporal. Revisa tu conexión, danos unos minutos y lo volvemos a intentar :)</string>
+    <string name="cannot_connect_api_google">Algo anda mal con tus Servicios de Google. Revísalos y nos cuentas para volver a intentarlo.</string>
 </resources>
