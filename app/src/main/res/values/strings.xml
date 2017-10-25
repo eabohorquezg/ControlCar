@@ -12,4 +12,7 @@
     <string name="google_auth_fail">No nos hemos podido conectar con tus servicios de Google. Intenta en unos minutos por fa.</string>
     <string name="firebase_auth_fail">Hemos tenido problemas al autenticarte en nuestros servidores. Seguro fue cosa del internet o algo temporal. Revisa tu conexión, danos unos minutos y lo volvemos a intentar :)</string>
     <string name="cannot_connect_api_google">Algo anda mal con tus Servicios de Google. Revísalos y nos cuentas para volver a intentarlo.</string>
+    <string name="init_travel">Iniciar viaje</string>
+    <string name="write_plate">Ingresa la placa</string>
+    <string name="invalid_plate">La placa no es correcta</string>
 </resources>

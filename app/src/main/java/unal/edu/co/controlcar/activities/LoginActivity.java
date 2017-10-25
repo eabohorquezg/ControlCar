@@ -25,7 +25,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import unal.edu.co.controlcar.MainActivity;
 import unal.edu.co.controlcar.R;
 
-public class InitActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 9823;
     private GoogleApiClient mGoogleApiClient;
@@ -35,7 +35,7 @@ public class InitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_init);
+        setContentView(R.layout.activity_login);
 
         final Button btnLogin = (Button) findViewById(R.id.btnLoginGoogle);
         txtAccept = (TextView) findViewById(R.id.txtAccept);
@@ -44,7 +44,7 @@ public class InitActivity extends AppCompatActivity {
         txtAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(InitActivity.this, ExplorerActivity.class);
+                Intent intent = new Intent(LoginActivity.this, ExplorerActivity.class);
                 intent.putExtra("title", getString(R.string.terms));
                 intent.putExtra("url", "https://controlcar-33b52.firebaseapp.com/");
                 startActivity(intent);
@@ -60,8 +60,8 @@ public class InitActivity extends AppCompatActivity {
 
                 //Conexión a Google API
                 if (mGoogleApiClient == null) {
-                    mGoogleApiClient = new GoogleApiClient.Builder(InitActivity.this)
-                            .enableAutoManage(InitActivity.this,
+                    mGoogleApiClient = new GoogleApiClient.Builder(LoginActivity.this)
+                            .enableAutoManage(LoginActivity.this,
                                     new GoogleApiClient.OnConnectionFailedListener() {
                                         @Override
                                         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -81,7 +81,7 @@ public class InitActivity extends AppCompatActivity {
         //Current user
         if (mAuth.getCurrentUser() != null) {
             finish();
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, InitTravelActivity.class));
         }
     }
 
@@ -119,7 +119,7 @@ public class InitActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             mGoogleApiClient.disconnect();
                             finish();
-                            startActivity(new Intent(InitActivity.this, MainActivity.class));
+                            startActivity(new Intent(LoginActivity.this, InitTravelActivity.class));
                         } else {
                             Snackbar.make(txtAccept, R.string.firebase_auth_fail,
                                     Snackbar.LENGTH_INDEFINITE).show();
