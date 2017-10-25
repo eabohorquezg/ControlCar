@@ -6,6 +6,7 @@ package unal.edu.co.controlcar.activities;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -14,19 +15,23 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.ToggleButton;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 
 import java.text.DecimalFormat;
 
 import unal.edu.co.controlcar.R;
 
-public class MainActivity extends AppCompatActivity implements LocationListener,View.OnClickListener{
+public class TravelActivity extends AppCompatActivity implements LocationListener, View.OnClickListener, OnMapReadyCallback {
 
     //variables for accelerometer
     private TextView textX, textY, textZ;
@@ -36,21 +41,22 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     //variables for velocimeter
     private LocationManager locationManager;
     private TextView speedTextView;
-    private ToggleButton toggleButton;
+    private Button toggleButton;
     private TextView longitudeValue;
     private TextView latitudeValue;
     private float currentSpeed = 0.0f;
 
+    private SupportMapFragment mapFragment;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_travel);
 
         speedTextView = (TextView) findViewById(R.id.speedTextView);
-        toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
+        toggleButton = (Button) findViewById(R.id.toggleButton);
         longitudeValue = (TextView) findViewById(R.id.longitudeValue);
         latitudeValue = (TextView) findViewById(R.id.latitudeValue);
 
-        toggleButton.setChecked(true);
         toggleButton.setOnClickListener(this);
 
         //setup GPS location service
@@ -65,6 +71,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
         //turn on speedometer using GPS
         turnOnGps();
+
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        /*mapFragment = MapFragment.newInstance();
+        FragmentTransaction fragmentTransaction =
+                getFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.lytMap, mapFragment);
+        fragmentTransaction.commit();*/
     }
 
     public void onPause() {
@@ -84,7 +100,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     }
 
     SensorEventListener accelListener = new SensorEventListener() {
-        public void onAccuracyChanged(Sensor sensor, int acc) { }
+        public void onAccuracyChanged(Sensor sensor, int acc) {
+        }
 
         public void onSensorChanged(SensorEvent event) {
             float x = event.values[0];
@@ -150,16 +167,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.toggleButton) {
+        turnOffGps();
+        finish();
+        startActivity(new Intent(TravelActivity.this, InitTravelActivity.class));
+        /*if (v.getId() == R.id.toggleButton) {
             vibrate();
-            if( toggleButton.isChecked() ) {
+            if (toggleButton.isChecked()) {
                 turnOnGps();
                 onResume();
-            }else{
+            } else {
                 turnOffGps();
                 onStop();
             }
-        }
+        }*/
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+    }
 }

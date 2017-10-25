@@ -16,8 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.MainActivity" />
-           <!-- android:screenOrientation="portrait" -->
+            android:name=".activities.TravelActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.LoginActivity"
             android:screenOrientation="portrait">
@@ -31,7 +31,15 @@
             android:name=".activities.ExplorerActivity"
             android:noHistory="true"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.InitTravelActivity"></activity>
+        <activity android:name=".activities.InitTravelActivity" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBJcmfk5UTWodCo3kjqkMQQYjNb7g6G88E" />
+
     </application>
 
 </manifest>

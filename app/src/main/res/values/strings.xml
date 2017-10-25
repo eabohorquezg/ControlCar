@@ -15,4 +15,5 @@
     <string name="init_travel">Iniciar viaje</string>
     <string name="write_plate">Ingresa la placa</string>
     <string name="invalid_plate">La placa no es correcta</string>
+    <string name="finish_travel">Terminar viaje</string>
 </resources>

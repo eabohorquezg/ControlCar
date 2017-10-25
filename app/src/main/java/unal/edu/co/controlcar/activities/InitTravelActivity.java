@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import unal.edu.co.controlcar.MainActivity;
 import unal.edu.co.controlcar.R;
 
 public class InitTravelActivity extends AppCompatActivity {
@@ -28,7 +27,8 @@ public class InitTravelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (edtPlate.getText().toString().toCharArray().length == 6) {
                     // TODO Verify Firebase
-                    startActivity(new Intent(InitTravelActivity.this, MainActivity.class));
+                    finish();
+                    startActivity(new Intent(InitTravelActivity.this, TravelActivity.class));
                 } else {
                     edtPlate.setError(getString(R.string.invalid_plate));
                 }
