@@ -22,7 +22,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import unal.edu.co.controlcar.MainActivity;
 import unal.edu.co.controlcar.R;
 
 public class LoginActivity extends AppCompatActivity {

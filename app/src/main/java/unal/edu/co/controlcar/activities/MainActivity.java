@@ -1,4 +1,4 @@
-package unal.edu.co.controlcar;
+package unal.edu.co.controlcar.activities;
 
 /**
  * Created by Edwin on 11/10/2017.
@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.text.DecimalFormat;
+
+import unal.edu.co.controlcar.R;
 
 public class MainActivity extends AppCompatActivity implements LocationListener,View.OnClickListener{
 
@@ -114,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     private void turnOffGps() {
         longitudeValue.setText(getResources().getString(R.string.unknownLongLat));
         latitudeValue.setText(getResources().getString(R.string.unknownLongLat));
-        longitudeValue.setText("unknown");
         locationManager.removeUpdates(this);
     }
 

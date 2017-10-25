@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "818009924888-mtehja147luc465hnre17fo65il41jq1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "unal.edu.co.controlcar",
+            "certificate_hash": "f32138c23f33eb1872f5c56e9eadba581eee27db"
+          }
+        },
+        {
+          "client_id": "818009924888-t684ovvdlv0c9gh0ljaprva24sq50g4o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "unal.edu.co.controlcar",
+            "certificate_hash": "cbd1e85ca389d4778cece075ac27fb61692d7bf8"
+          }
+        },
+        {
           "client_id": "818009924888-mlc88l3vi7cchufv5dnom14ghjtptevm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

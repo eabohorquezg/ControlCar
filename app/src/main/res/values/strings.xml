@@ -3,8 +3,8 @@
     <string name="kmh">kmh</string>
     <string name="toggle_turn_on">Turn off !</string>
     <string name="toggle_turn_off">Turn on !</string>
-    <string name="longitude">longitude: </string>
-    <string name="latitude">latitude: </string>
+    <string name="longitude">Longitude: \u0020</string>
+    <string name="latitude">Latitude: \u0020</string>
     <string name="unknownLongLat">unknown</string>
     <string name="accept_terms">Al ingresar estás aceptando los términos y condiciones de ControlCar, así como su política de seguridad y de tratamiento de datos.</string>
     <string name="sign_in_with_google">Ingresar con Google</string>
