@@ -16,7 +16,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -75,12 +74,6 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        /*mapFragment = MapFragment.newInstance();
-        FragmentTransaction fragmentTransaction =
-                getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.lytMap, mapFragment);
-        fragmentTransaction.commit();*/
     }
 
     public void onPause() {
@@ -117,7 +110,8 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     //Velocimeter
     private void turnOnGps() {
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0, this);
@@ -160,26 +154,11 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         turnOffGps();
     }
 
-    public void vibrate() {
-        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(100);
-    }
-
     @Override
     public void onClick(View v) {
         turnOffGps();
         finish();
         startActivity(new Intent(TravelActivity.this, InitTravelActivity.class));
-        /*if (v.getId() == R.id.toggleButton) {
-            vibrate();
-            if (toggleButton.isChecked()) {
-                turnOnGps();
-                onResume();
-            } else {
-                turnOffGps();
-                onStop();
-            }
-        }*/
     }
 
     @Override

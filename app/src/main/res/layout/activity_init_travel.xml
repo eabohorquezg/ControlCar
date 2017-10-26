@@ -24,6 +24,7 @@
             android:id="@+id/edtPlate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textCapCharacters"
             android:maxLength="6"
             android:textSize="48dp" />
     </LinearLayout>

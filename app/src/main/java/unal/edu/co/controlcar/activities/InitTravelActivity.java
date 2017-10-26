@@ -7,7 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import unal.edu.co.controlcar.R;
+import unal.edu.co.controlcar.models.Travel;
 
 public class InitTravelActivity extends AppCompatActivity {
 
@@ -27,8 +34,35 @@ public class InitTravelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (edtPlate.getText().toString().toCharArray().length == 6) {
                     // TODO Verify Firebase
-                    finish();
-                    startActivity(new Intent(InitTravelActivity.this, TravelActivity.class));
+
+                    FirebaseDatabase.getInstance().getReference()
+                            .child("Cars")
+                            .child(edtPlate.getText().toString()).addListenerForSingleValueEvent(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.getValue() != null) {
+                                        Travel travel = new Travel();
+                                        travel.setInitHour("Hora actual");
+                                        travel.setInitLatitude(0);
+                                        travel.setInitLongitude(0);
+                                        travel.setPlate(edtPlate.getText().toString());
+                                        travel.setDriverName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                                        String key = FirebaseDatabase.getInstance().getReference().child("Travels").push().getKey();
+                                        travel.setId(key);
+                                        FirebaseDatabase.getInstance().getReference().child("Travels").child(key).setValue(travel);
+                                        finish();
+                                        startActivity(new Intent(InitTravelActivity.this, TravelActivity.class));
+                                    } else {
+                                        edtPlate.setError("La placa no existe. Lo siento.");
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                 } else {
                     edtPlate.setError(getString(R.string.invalid_plate));
                 }
