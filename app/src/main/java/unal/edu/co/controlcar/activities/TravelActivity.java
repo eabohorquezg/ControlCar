@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,7 +42,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     //variables for velocimeter
     private LocationManager locationManager;
     private TextView speedTextView;
-    private Button toggleButton;
+    private Button btnfinishTravel;
     private TextView longitudeValue;
     private TextView latitudeValue;
     private float currentSpeed = 0.0f;
@@ -53,11 +54,11 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         setContentView(R.layout.activity_travel);
 
         speedTextView = (TextView) findViewById(R.id.speedTextView);
-        toggleButton = (Button) findViewById(R.id.toggleButton);
+        btnfinishTravel = (Button) findViewById(R.id.btnfinishTravel);
         longitudeValue = (TextView) findViewById(R.id.longitudeValue);
         latitudeValue = (TextView) findViewById(R.id.latitudeValue);
 
-        toggleButton.setOnClickListener(this);
+        btnfinishTravel.setOnClickListener(this);
 
         //setup GPS location service
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -71,6 +72,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
 
         //turn on speedometer using GPS
         turnOnGps();
+
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -170,7 +172,8 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         turnOffGps();
         finish();
         startActivity(new Intent(TravelActivity.this, InitTravelActivity.class));
-        /*if (v.getId() == R.id.toggleButton) {
+        /*
+        if (v.getId() == R.id.toggleButton) {
             vibrate();
             if (toggleButton.isChecked()) {
                 turnOnGps();
@@ -179,7 +182,8 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
                 turnOffGps();
                 onStop();
             }
-        }*/
+        }
+        */
     }
 
     @Override

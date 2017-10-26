@@ -120,13 +120,16 @@
                 android:layout_marginTop="5dp"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        </LinearLayout>
-    </ScrollView>
+            <Button
+                android:id="@+id/btnfinishTravel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#dc4a38"
+                android:textColor="@color/white"
+                android:text="@string/finish_travel" />
 
-    <Button
-        android:id="@+id/toggleButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/finish_travel" />
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
