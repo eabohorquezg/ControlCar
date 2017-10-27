@@ -46,11 +46,9 @@
             android:layout_marginTop="64dp"
             android:background="#dc4a38"
             android:elevation="5dp"
-            android:ellipsize="middle"
-            android:lines="1"
-            android:maxLines="1"
             android:text="@string/init_travel"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:singleLine="true" />
 
     </LinearLayout>
 

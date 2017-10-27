@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "818009924888-t6v279fk67ld2ioc2l5h1iock8ug49cr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "unal.edu.co.controlcar",
+            "certificate_hash": "9286a5029dafb91d950baa379dd128f2c0eaacc6"
+          }
+        },
+        {
           "client_id": "818009924888-mtehja147luc465hnre17fo65il41jq1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
