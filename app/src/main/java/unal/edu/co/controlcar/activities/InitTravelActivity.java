@@ -13,6 +13,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 import unal.edu.co.controlcar.R;
 import unal.edu.co.controlcar.models.Travel;
 
@@ -37,16 +43,19 @@ public class InitTravelActivity extends AppCompatActivity {
 
                     FirebaseDatabase.getInstance().getReference()
                             .child("Cars")
-                            .child(edtPlate.getText().toString()).addListenerForSingleValueEvent(
+                            .child(edtPlate.getText().toString().toUpperCase()).addListenerForSingleValueEvent(
                             new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.getValue() != null) {
                                         Travel travel = new Travel();
-                                        travel.setInitHour("Hora actual");
+                                        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                                        dateFormat.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
+                                        Calendar today = Calendar.getInstance();
+                                        travel.setInitHour(dateFormat.format(today.getTime()));
                                         travel.setInitLatitude(0);
                                         travel.setInitLongitude(0);
-                                        travel.setPlate(edtPlate.getText().toString());
+                                        travel.setPlate(edtPlate.getText().toString().toUpperCase());
                                         travel.setDriverName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                                         String key = FirebaseDatabase.getInstance().getReference().child("Travels").push().getKey();
                                         travel.setId(key);

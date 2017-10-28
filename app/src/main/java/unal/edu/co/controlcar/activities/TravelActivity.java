@@ -23,9 +23,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.text.DecimalFormat;
 
@@ -47,6 +49,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     private float currentSpeed = 0.0f;
 
     private SupportMapFragment mapFragment;
+    private GoogleMap mMap;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,10 +139,14 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     public void onLocationChanged(Location location) {
         double lat = location.getLatitude();
         double lng = location.getLongitude();
+
         latitudeValue.setText(String.valueOf(lat));
         longitudeValue.setText(String.valueOf(lng));
         currentSpeed = location.getSpeed() * 3.6f;//in kmh
         speedTextView.setText(new DecimalFormat("#.##").format(currentSpeed));
+
+        LatLng current = new LatLng(lat, lng);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 17));
     }
 
     @Override
@@ -177,6 +184,9 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
+        //cargar a una posicion por defecto, si el gps esta desactivado.
+        mMap = googleMap;
+        LatLng bogota = new LatLng(4.7110, -74.0721);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(bogota, 5));
     }
 }
