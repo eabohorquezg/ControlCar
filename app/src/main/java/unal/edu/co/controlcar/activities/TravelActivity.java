@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,8 +35,9 @@ import com.google.android.gms.maps.model.LatLng;
 import java.text.DecimalFormat;
 
 import unal.edu.co.controlcar.R;
+import unal.edu.co.controlcar.View.Speedometer;
 
-public class TravelActivity extends AppCompatActivity implements LocationListener, View.OnClickListener, OnMapReadyCallback {
+public class TravelActivity extends AppCompatActivity implements LocationListener, View.OnClickListener , OnMapReadyCallback {
 
     //variables for accelerometer
     private TextView textX, textY, textZ;
@@ -44,7 +46,8 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
 
     //variables for velocimeter
     private LocationManager locationManager;
-    private TextView speedTextView;
+    //private TextView speedTextView;
+    private Speedometer speedometer;
     private Button btnfinishTravel;
     private TextView longitudeValue;
     private TextView latitudeValue;
@@ -57,7 +60,10 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel);
 
-        speedTextView = (TextView) findViewById(R.id.speedTextView);
+        //speedTextView = (TextView) findViewById(R.id.speedTextView);
+        speedometer = (Speedometer) findViewById(R.id.Speedometer);
+        speedometer.onSpeedChanged(currentSpeed);
+
         btnfinishTravel = (Button) findViewById(R.id.btnfinishTravel);
         longitudeValue = (TextView) findViewById(R.id.longitudeValue);
         latitudeValue = (TextView) findViewById(R.id.latitudeValue);
@@ -130,6 +136,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
         }*/
+
     }
 
     private void turnOffGps() {
@@ -146,7 +153,8 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         latitudeValue.setText(String.valueOf(lat));
         longitudeValue.setText(String.valueOf(lng));
         currentSpeed = location.getSpeed() * 3.6f;//in kmh
-        speedTextView.setText(new DecimalFormat("#.##").format(currentSpeed));
+        //speedTextView.setText(new DecimalFormat("#.##").format(currentSpeed));
+        speedometer.onSpeedChanged(currentSpeed);
 
         LatLng current = new LatLng(lat, lng);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 17));
@@ -171,6 +179,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         turnOffGps();
         finish();
         startActivity(new Intent(TravelActivity.this, InitTravelActivity.class));
+
         /*
         if (v.getId() == R.id.toggleButton) {
             vibrate();
@@ -198,4 +207,5 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
     }
+
 }

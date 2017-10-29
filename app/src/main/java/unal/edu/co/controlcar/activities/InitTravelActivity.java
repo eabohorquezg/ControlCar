@@ -38,7 +38,7 @@ public class InitTravelActivity extends AppCompatActivity {
         btnInitTravel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edtPlate.getText().toString().toCharArray().length == 6) {
+                if (edtPlate.getText().toString().toCharArray().length == 6 ) {
                     // TODO Verify Firebase
 
                     FirebaseDatabase.getInstance().getReference()
