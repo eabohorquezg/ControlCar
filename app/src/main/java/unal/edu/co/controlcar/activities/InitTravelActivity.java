@@ -25,6 +25,7 @@ import unal.edu.co.controlcar.models.Travel;
 public class InitTravelActivity extends AppCompatActivity {
 
     private Button btnInitTravel;
+    private Button btnLogoutUser;
     private EditText edtPlate;
 
     @Override
@@ -33,14 +34,23 @@ public class InitTravelActivity extends AppCompatActivity {
         setContentView(R.layout.activity_init_travel);
 
         btnInitTravel = (Button) findViewById(R.id.btnInitTravel);
+        btnLogoutUser = (Button) findViewById(R.id.btnLogoutUser);
         edtPlate = (EditText) findViewById(R.id.edtPlate);
+
+        btnLogoutUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                finish();
+                startActivity(new Intent(InitTravelActivity.this, LoginActivity.class));
+            }
+        });
 
         btnInitTravel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (edtPlate.getText().toString().toCharArray().length == 6 ) {
                     // TODO Verify Firebase
-
                     FirebaseDatabase.getInstance().getReference()
                             .child("Cars")
                             .child(edtPlate.getText().toString().toUpperCase()).addListenerForSingleValueEvent(
