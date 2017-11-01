@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,30 +29,31 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_centerVertical="true"
+        android:id="@+id/groupbuttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/groupbuttons">
-
-        <Button
-            android:id="@+id/btnInitTravel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:background="#dc4a38"
-            android:elevation="5dp"
-            android:text="@string/init_travel"
-            android:textColor="@color/white" />
+        android:layout_centerVertical="true"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
         <Button
             android:id="@+id/btnLogoutUser"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:background="#dc4a38"
+            android:layout_weight="1"
+            android:background="#a44134"
             android:elevation="5dp"
             android:text="@string/logout_user"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/btnInitTravel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#dc4a38"
+            android:elevation="5dp"
+            android:text="@string/init_travel"
             android:textColor="@color/white" />
 
     </LinearLayout>

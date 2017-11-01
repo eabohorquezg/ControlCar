@@ -22,22 +22,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
-
-import java.text.DecimalFormat;
 
 import unal.edu.co.controlcar.R;
 import unal.edu.co.controlcar.View.Speedometer;
 
-public class TravelActivity extends AppCompatActivity implements LocationListener, View.OnClickListener , OnMapReadyCallback {
+public class TravelActivity extends AppCompatActivity implements LocationListener, View.OnClickListener, OnMapReadyCallback {
 
     //variables for accelerometer
     private TextView textX, textY, textZ;
@@ -46,7 +41,6 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
 
     //variables for velocimeter
     private LocationManager locationManager;
-    //private TextView speedTextView;
     private Speedometer speedometer;
     private Button btnfinishTravel;
     private TextView longitudeValue;
@@ -60,7 +54,6 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel);
 
-        //speedTextView = (TextView) findViewById(R.id.speedTextView);
         speedometer = (Speedometer) findViewById(R.id.Speedometer);
         speedometer.onSpeedChanged(currentSpeed);
 
@@ -82,7 +75,6 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
 
         //turn on speedometer using GPS
         turnOnGps();
-
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -130,13 +122,6 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, this);
         }
-        /*if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
-        }*/
-
     }
 
     private void turnOffGps() {
@@ -152,8 +137,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
 
         latitudeValue.setText(String.valueOf(lat));
         longitudeValue.setText(String.valueOf(lng));
-        currentSpeed = location.getSpeed() * 3.6f;//in kmh
-        //speedTextView.setText(new DecimalFormat("#.##").format(currentSpeed));
+        currentSpeed = location.getSpeed() * 3.6f;
         speedometer.onSpeedChanged(currentSpeed);
 
         LatLng current = new LatLng(lat, lng);
@@ -179,19 +163,6 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         turnOffGps();
         finish();
         startActivity(new Intent(TravelActivity.this, InitTravelActivity.class));
-
-        /*
-        if (v.getId() == R.id.toggleButton) {
-            vibrate();
-            if (toggleButton.isChecked()) {
-                turnOnGps();
-                onResume();
-            } else {
-                turnOffGps();
-                onStop();
-            }
-        }
-        */
     }
 
     @Override

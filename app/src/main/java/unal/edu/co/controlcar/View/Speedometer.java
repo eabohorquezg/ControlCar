@@ -19,8 +19,7 @@ import unal.edu.co.controlcar.R;
 
 public class Speedometer extends View {
 
-	private static final String TAG = Speedometer.class.getSimpleName();
-	public static final float DEFAULT_MAX_SPEED = 200;
+	public static final float DEFAULT_MAX_SPEED = 120;
 
 	// Speedometer internal state
 	private float mMaxSpeed;
