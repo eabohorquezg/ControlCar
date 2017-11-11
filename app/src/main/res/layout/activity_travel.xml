@@ -22,10 +22,10 @@
             android:layout_below="@id/incToolbar"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingBottom="32dp"
+            android:paddingBottom="16dp"
             android:paddingLeft="32dp"
             android:paddingRight="32dp"
-            android:paddingTop="32dp">
+            android:paddingTop="5dp">
 
             <unal.edu.co.controlcar.View.Speedometer
                 android:id="@+id/Speedometer"
@@ -39,7 +39,7 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="320dp">
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"

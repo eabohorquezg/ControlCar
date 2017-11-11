@@ -147,9 +147,9 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
-            textX.setText("X : " + x);
-            textY.setText("Y : " + y);
-            textZ.setText("Z : " + z);
+            textX.setText("X : " + String.format("%.1f",x));
+            textY.setText("Y : " + String.format("%.1f",y));
+            textZ.setText("Z : " + String.format("%.1f",z));
             if( (x >= 0.5 && x <= 1) || (x >= 1.5 && x <= 2) || (x >= 2.5 && x <= 3) ||
                     (x >= -1 && x <= -0.5) || (x >= -2 && x <= -1.5) || (x >= -3 && x <= -2.5) ||
                     speedometer.getCurrentSpeed() > 80 ) {
