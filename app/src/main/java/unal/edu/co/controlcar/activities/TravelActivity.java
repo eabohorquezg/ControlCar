@@ -39,6 +39,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -47,6 +48,8 @@ import unal.edu.co.controlcar.models.Alert;
 import unal.edu.co.controlcar.R;
 import unal.edu.co.controlcar.View.Speedometer;
 import unal.edu.co.controlcar.models.Travel;
+
+import static java.lang.Math.abs;
 
 public class TravelActivity extends AppCompatActivity implements LocationListener, View.OnClickListener, OnMapReadyCallback {
 
@@ -64,6 +67,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     private float currentSpeed = 0.0f;
 
     //variables for ubication
+    private static DecimalFormat df2 = new DecimalFormat(".#######");
     private double longitude;
     private double latitude;
 
@@ -159,7 +163,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
                 dateFormat.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
                 Calendar today = Calendar.getInstance();
                 double velocity = speedometer.getCurrentSpeed();
-                Alert alert = new Alert(dateFormat.format(today.getTime()),description,velocity,latitude,longitude,(int)x);
+                Alert alert = new Alert(dateFormat.format(today.getTime()),description,velocity,latitude,longitude, abs((int)x));
                 FirebaseDatabase.getInstance().getReference().child("Travels").
                         child(getIntent().getExtras().getString("key")).child("Alerts").push().setValue(alert);
                 showAlertDialog(description,alert.getInitHour());
@@ -188,8 +192,8 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     public void onLocationChanged(Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
-        latitudeValue.setText(String.valueOf(latitude));
-        longitudeValue.setText(String.valueOf(longitude));
+        latitudeValue.setText(df2.format(latitude));
+        longitudeValue.setText(df2.format(longitude));
         currentSpeed = location.getSpeed() * 3.6f;
         speedometer.onSpeedChanged(currentSpeed);
 

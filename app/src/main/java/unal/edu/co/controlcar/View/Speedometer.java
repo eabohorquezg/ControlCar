@@ -37,7 +37,7 @@ public class Speedometer extends View {
 	// Drawing colors
 	private int ON_COLOR = Color.argb(255, 0xff, 0xA5, 0x00);
 	private int OFF_COLOR = Color.argb(255,0x3e,0x3e,0x3e);
-	private int SCALE_COLOR = Color.argb(255, 255, 255, 255);
+	private int SCALE_COLOR = Color.argb(255, 0, 0, 0);
 	private float SCALE_SIZE = 14f;
 	private float READING_SIZE = 60f;
 	
@@ -90,10 +90,10 @@ public class Speedometer extends View {
 		
 		readingPaint = new Paint(scalePaint);
 		readingPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-		offMarkPaint.setShadowLayer(3f, 0f, 0f, Color.WHITE);
+		offMarkPaint.setShadowLayer(3f, 0f, 0f, Color.BLACK);
 		readingPaint.setTextSize(50f);
 		readingPaint.setTypeface(Typeface.SANS_SERIF);
-		readingPaint.setColor(Color.WHITE);
+		readingPaint.setColor(Color.BLACK);
 		
 		onPath = new Path();
 		offPath = new Path();
