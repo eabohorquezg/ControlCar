@@ -6,19 +6,28 @@ package unal.edu.co.controlcar.models;
 
 public class Alert {
 
-    private String id;
+    private String initHour;
     private String description;
     private double velocity;
     private double latitude;
     private double longitude;
     private int holeLevel;
 
-    public String getId() {
-        return id;
+    public Alert(String initHour,String description, double velocity, double latitude, double longitude, int holeLevel) {
+        this.initHour = initHour;
+        this.description = description;
+        this.velocity = velocity;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.holeLevel = holeLevel;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getInitHour() {
+        return initHour;
+    }
+
+    public void setInitHour(String initHour) {
+        this.initHour = initHour;
     }
 
     public String getDescription() {

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
+    android:background="#26A9DF"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -22,7 +22,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="40dp"
+            android:textStyle="bold"
+            android:textColor="#000000"
             android:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/driver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:text="Conductor" />
 
         <ImageView
             android:id="@+id/imgLogo"
@@ -31,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="centerInside"
-            android:src="@drawable/controlcar" />
+            android:src="@drawable/controlcardriver" />
 
     </LinearLayout>
 

@@ -5,7 +5,10 @@ package unal.edu.co.controlcar.activities;
  */
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
@@ -19,9 +22,15 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,8 +38,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
+
+import unal.edu.co.controlcar.models.Alert;
 import unal.edu.co.controlcar.R;
 import unal.edu.co.controlcar.View.Speedometer;
+import unal.edu.co.controlcar.models.Travel;
 
 public class TravelActivity extends AppCompatActivity implements LocationListener, View.OnClickListener, OnMapReadyCallback {
 
@@ -47,12 +63,20 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     private TextView latitudeValue;
     private float currentSpeed = 0.0f;
 
+    //variables for ubication
+    private double longitude;
+    private double latitude;
+
+    AlertDialog.Builder alert_dialog;
+
     private SupportMapFragment mapFragment;
     private GoogleMap mMap;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel);
+
+        alert_dialog = new AlertDialog.Builder(this);
 
         speedometer = (Speedometer) findViewById(R.id.Speedometer);
         speedometer.onSpeedChanged(currentSpeed);
@@ -98,6 +122,19 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         sensorManager.unregisterListener(accelListener);
     }
 
+    public void showAlertDialog( String description, String date ){
+        alert_dialog.setTitle("Conduce con cuidado!");
+        alert_dialog.setIcon(R.drawable.warning);
+        alert_dialog.setMessage("Se registro un "+description+"\n"+date);
+        alert_dialog.setCancelable(false);
+        alert_dialog.setPositiveButton("Volver al viaje", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        alert_dialog.show();
+    }
+
     SensorEventListener accelListener = new SensorEventListener() {
         public void onAccuracyChanged(Sensor sensor, int acc) {
         }
@@ -106,10 +143,27 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
-
             textX.setText("X : " + x);
             textY.setText("Y : " + y);
             textZ.setText("Z : " + z);
+            if( (x >= 0.5 && x <= 1) || (x >= 1.5 && x <= 2) || (x >= 2.5 && x <= 3) ||
+                    (x >= -1 && x <= -0.5) || (x >= -2 && x <= -1.5) || (x >= -3 && x <= -2.5) ||
+                    speedometer.getCurrentSpeed() > 80 ) {
+                String description = "";
+                if( speedometer.getCurrentSpeed() > 80 ){
+                    description = "Exceso de velocidad";
+                }else{
+                    description = "Movimiento brusco del vehiculo";
+                }
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
+                Calendar today = Calendar.getInstance();
+                double velocity = speedometer.getCurrentSpeed();
+                Alert alert = new Alert(dateFormat.format(today.getTime()),description,velocity,latitude,longitude,(int)x);
+                FirebaseDatabase.getInstance().getReference().child("Travels").
+                        child(getIntent().getExtras().getString("key")).child("Alerts").push().setValue(alert);
+                showAlertDialog(description,alert.getInitHour());
+            }
         }
     };
 
@@ -132,15 +186,14 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
 
     @Override
     public void onLocationChanged(Location location) {
-        double lat = location.getLatitude();
-        double lng = location.getLongitude();
-
-        latitudeValue.setText(String.valueOf(lat));
-        longitudeValue.setText(String.valueOf(lng));
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+        latitudeValue.setText(String.valueOf(latitude));
+        longitudeValue.setText(String.valueOf(longitude));
         currentSpeed = location.getSpeed() * 3.6f;
         speedometer.onSpeedChanged(currentSpeed);
 
-        LatLng current = new LatLng(lat, lng);
+        LatLng current = new LatLng(latitude, longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 17));
     }
 
@@ -160,6 +213,11 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
 
     @Override
     public void onClick(View v) {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
+        Calendar today = Calendar.getInstance();
+        FirebaseDatabase.getInstance().getReference().child("Travels").
+                child(getIntent().getExtras().getString("key")).child("endTime").setValue(dateFormat.format(today.getTime()));
         turnOffGps();
         finish();
         startActivity(new Intent(TravelActivity.this, InitTravelActivity.class));
@@ -176,6 +234,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            //mMap.getMyLocation().getLongitude();
         }
     }
 

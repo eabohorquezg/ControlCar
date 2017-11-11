@@ -7,25 +7,6 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="1">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.35"
-            android:background="@color/colorPrimary" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.35" />
-
-    </LinearLayout>
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -50,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:background="#FFFFFF"
+                android:background="#000000"
                 custom:currentSpeed="0"
                 custom:maxSpeed="120"
                 custom:offColor="#444444" />

@@ -8,10 +8,19 @@ public class Travel {
 
     private String id;
     private String initHour;
+    private String endTime;
     private double initLatitude;
     private double initLongitude;
     private String plate;
     private String driverName;
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
 
     public String getId() {
         return id;

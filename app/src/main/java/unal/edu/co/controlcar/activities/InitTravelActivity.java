@@ -70,6 +70,7 @@ public class InitTravelActivity extends AppCompatActivity {
         btnInitTravel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (edtPlate.getText().toString().toCharArray().length == 6 ) {
                     // TODO Verify Firebase
                     FirebaseDatabase.getInstance().getReference()
@@ -84,6 +85,7 @@ public class InitTravelActivity extends AppCompatActivity {
                                         dateFormat.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
                                         Calendar today = Calendar.getInstance();
                                         travel.setInitHour(dateFormat.format(today.getTime()));
+                                        travel.setEndTime("");
                                         travel.setInitLatitude(0);
                                         travel.setInitLongitude(0);
                                         travel.setPlate(edtPlate.getText().toString().toUpperCase());
@@ -91,8 +93,11 @@ public class InitTravelActivity extends AppCompatActivity {
                                         String key = FirebaseDatabase.getInstance().getReference().child("Travels").push().getKey();
                                         travel.setId(key);
                                         FirebaseDatabase.getInstance().getReference().child("Travels").child(key).setValue(travel);
+                                        Intent intent = new Intent(InitTravelActivity.this, TravelActivity.class);
+                                        intent.putExtra("key",key);
                                         finish();
-                                        startActivity(new Intent(InitTravelActivity.this, TravelActivity.class));
+                                        startActivity(intent);
+                                        //startActivity(new Intent(InitTravelActivity.this, TravelActivity.class));
                                     } else {
                                         edtPlate.setError("La placa no existe. Lo siento.");
                                     }
