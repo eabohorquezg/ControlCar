@@ -135,6 +135,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     public void onResume() {
         super.onResume();
         sensorManager.registerListener(accelListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        turnOnGps();
     }
 
     public void onStop() {
@@ -207,6 +208,20 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     }
 
     @Override
+    public void onMapReady(GoogleMap googleMap) {
+        //cargar a una posicion por defecto, si el gps esta desactivado.
+        mMap = googleMap;
+        LatLng bogota = new LatLng(4.7110, -74.0721);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(bogota, 5));
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        }
+    }
+
+    @Override
     public void onLocationChanged(Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
@@ -216,7 +231,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         speedometer.onSpeedChanged(currentSpeed);
 
         LatLng current = new LatLng(latitude, longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 17));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 10));
     }
 
     @Override
@@ -245,20 +260,5 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         startActivity(new Intent(TravelActivity.this, InitTravelActivity.class));
     }
 
-    private Location loc;
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        //cargar a una posicion por defecto, si el gps esta desactivado.
-        mMap = googleMap;
-        LatLng bogota = new LatLng(4.7110, -74.0721);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(bogota, 5));
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        }
-    }
 
 }

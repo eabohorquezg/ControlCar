@@ -117,8 +117,8 @@ public class InitTravelActivity extends AppCompatActivity implements
                                                 travel.setInitLongitude(longitude);
                                             }
                                             else{
-                                                travel.setInitLatitude(0.0);
-                                                travel.setInitLongitude(0.0);
+                                                travel.setInitLatitude(4.7110);
+                                                travel.setInitLongitude(-74.0721);
                                             }
                                             travel.setPlate(edtPlate.getText().toString().toUpperCase());
                                             travel.setDriverName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
@@ -132,8 +132,8 @@ public class InitTravelActivity extends AppCompatActivity implements
                                                 intent.putExtra("latitude", String.valueOf(latitude) );
                                             }
                                             else{
-                                                intent.putExtra("longitude", "0.0");
-                                                intent.putExtra("latitude", "0.0" );
+                                                intent.putExtra("longitude", "-74.0721");
+                                                intent.putExtra("latitude", "4.7110" );
                                             }
                                             finish();
                                             startActivity(intent);
