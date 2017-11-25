@@ -74,6 +74,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     private TextView longitudeValue;
     private TextView latitudeValue;
     private float currentSpeed = 0.0f;
+    private boolean acceleration;
 
     //variables for ubication
     private static DecimalFormat df2 = new DecimalFormat(".#######");
@@ -94,6 +95,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
 
         speedometer = (Speedometer) findViewById(R.id.Speedometer);
         speedometer.onSpeedChanged(currentSpeed);
+        acceleration = true;
 
         btnfinishTravel = (Button) findViewById(R.id.btnfinishTravel);
         longitudeValue = (TextView) findViewById(R.id.longitudeValue);
@@ -170,9 +172,10 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
             textZ.setText("Z : " + String.format("%.1f", z));
             if ((x >= 0.5 && x <= 1) || (x >= 1.5 && x <= 2) || (x >= 2.5 && x <= 3) ||
                     (x >= -1 && x <= -0.5) || (x >= -2 && x <= -1.5) || (x >= -3 && x <= -2.5) ||
-                    speedometer.getCurrentSpeed() > 80) {
-                String description = "";
+                    (speedometer.getCurrentSpeed() > 80) && acceleration){
+                String description;
                 if (speedometer.getCurrentSpeed() > 80) {
+                    acceleration = false;
                     description = "Exceso de velocidad";
                 } else {
                     description = "Movimiento brusco del vehiculo";
@@ -186,6 +189,9 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
                         child(getIntent().getExtras().getString("key")).child("Alerts").push().setValue(alert);
                 showAlertDialog(description, alert.getInitHour());
             }
+
+            if(!acceleration && speedometer.getCurrentSpeed() < 40)
+                acceleration = true;
         }
     };
 
@@ -231,7 +237,8 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         speedometer.onSpeedChanged(currentSpeed);
 
         LatLng current = new LatLng(latitude, longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 10));
+        if(mMap != null)
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 17));
     }
 
     @Override
