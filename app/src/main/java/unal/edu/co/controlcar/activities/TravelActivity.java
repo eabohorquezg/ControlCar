@@ -20,6 +20,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +31,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -38,6 +45,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -52,7 +60,7 @@ import unal.edu.co.controlcar.models.Travel;
 
 import static java.lang.Math.abs;
 
-public class TravelActivity extends AppCompatActivity implements LocationListener, View.OnClickListener, OnMapReadyCallback {
+public class TravelActivity extends AppCompatActivity implements LocationListener, View.OnClickListener, OnMapReadyCallback{
 
     //variables for accelerometer
     private TextView textX, textY, textZ;
@@ -103,6 +111,11 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         textY = (TextView) findViewById(R.id.textY);
         textZ = (TextView) findViewById(R.id.textZ);
 
+        longitude = Double.parseDouble(getIntent().getExtras().getString("longitude"));
+        latitude = Double.parseDouble(getIntent().getExtras().getString("latitude"));
+        longitudeValue.setText(getIntent().getExtras().getString("longitude"));
+        latitudeValue.setText(getIntent().getExtras().getString("latitude"));
+
         //turn on speedometer using GPS
         //checkLocation();
         turnOnGps();
@@ -129,18 +142,18 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         sensorManager.unregisterListener(accelListener);
     }
 
-    public void showAlertDialog( String description, String date ){
-        if (tmpdialog!=null)tmpdialog.dismiss();
+    public void showAlertDialog(String description, String date) {
+        if (tmpdialog != null) tmpdialog.dismiss();
         alert_dialog.setTitle("Conduce con cuidado!");
         alert_dialog.setIcon(R.drawable.warning);
-        alert_dialog.setMessage("Se registro un "+description+"\n"+date);
+        alert_dialog.setMessage("Se registro un " + description + "\n" + date);
         alert_dialog.setCancelable(false);
         alert_dialog.setPositiveButton("Volver al viaje", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
             }
         });
-        tmpdialog =  alert_dialog.show();
+        tmpdialog = alert_dialog.show();
     }
 
     SensorEventListener accelListener = new SensorEventListener() {
@@ -151,30 +164,29 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
-            textX.setText("X : " + String.format("%.1f",x));
-            textY.setText("Y : " + String.format("%.1f",y));
-            textZ.setText("Z : " + String.format("%.1f",z));
-            if( (x >= 0.5 && x <= 1) || (x >= 1.5 && x <= 2) || (x >= 2.5 && x <= 3) ||
+            textX.setText("X : " + String.format("%.1f", x));
+            textY.setText("Y : " + String.format("%.1f", y));
+            textZ.setText("Z : " + String.format("%.1f", z));
+            if ((x >= 0.5 && x <= 1) || (x >= 1.5 && x <= 2) || (x >= 2.5 && x <= 3) ||
                     (x >= -1 && x <= -0.5) || (x >= -2 && x <= -1.5) || (x >= -3 && x <= -2.5) ||
-                    speedometer.getCurrentSpeed() > 80 ) {
+                    speedometer.getCurrentSpeed() > 80) {
                 String description = "";
-                if( speedometer.getCurrentSpeed() > 80 ){
+                if (speedometer.getCurrentSpeed() > 80) {
                     description = "Exceso de velocidad";
-                }else{
+                } else {
                     description = "Movimiento brusco del vehiculo";
                 }
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
                 Calendar today = Calendar.getInstance();
                 double velocity = speedometer.getCurrentSpeed();
-                Alert alert = new Alert(dateFormat.format(today.getTime()),description,velocity,latitude,longitude, abs((int)x));
+                Alert alert = new Alert(dateFormat.format(today.getTime()), description, velocity, latitude, longitude, abs((int) x));
                 FirebaseDatabase.getInstance().getReference().child("Travels").
                         child(getIntent().getExtras().getString("key")).child("Alerts").push().setValue(alert);
-                showAlertDialog(description,alert.getInitHour());
+                showAlertDialog(description, alert.getInitHour());
             }
         }
     };
-
 
 
     //Velocimeter
@@ -233,18 +245,19 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         startActivity(new Intent(TravelActivity.this, InitTravelActivity.class));
     }
 
+    private Location loc;
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         //cargar a una posicion por defecto, si el gps esta desactivado.
         mMap = googleMap;
         LatLng bogota = new LatLng(4.7110, -74.0721);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(bogota, 5));
-
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
-            //mMap.getMyLocation().getLongitude();
         }
     }
 

@@ -1,14 +1,19 @@
 package unal.edu.co.controlcar.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +24,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,7 +40,9 @@ import java.util.TimeZone;
 import unal.edu.co.controlcar.R;
 import unal.edu.co.controlcar.models.Travel;
 
-public class InitTravelActivity extends AppCompatActivity {
+public class InitTravelActivity extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private Button btnInitTravel;
     private Button btnLogoutUser;
@@ -42,6 +50,8 @@ public class InitTravelActivity extends AppCompatActivity {
     private GoogleApiClient mGoogleApiClient;
     private LocationManager locationManager;
     private boolean flagLocation = false;
+    private Double longitude;
+    private Double latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +74,12 @@ public class InitTravelActivity extends AppCompatActivity {
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                     .build();
         }
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
 
         mGoogleApiClient.connect();
 
@@ -98,8 +114,8 @@ public class InitTravelActivity extends AppCompatActivity {
                                             Calendar today = Calendar.getInstance();
                                             travel.setInitHour(dateFormat.format(today.getTime()));
                                             travel.setEndTime("");
-                                            travel.setInitLatitude(0);
-                                            travel.setInitLongitude(0);
+                                            travel.setInitLatitude(latitude);
+                                            travel.setInitLongitude(longitude);
                                             travel.setPlate(edtPlate.getText().toString().toUpperCase());
                                             travel.setDriverName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                                             String key = FirebaseDatabase.getInstance().getReference().child("Travels").push().getKey();
@@ -107,6 +123,8 @@ public class InitTravelActivity extends AppCompatActivity {
                                             FirebaseDatabase.getInstance().getReference().child("Travels").child(key).setValue(travel);
                                             Intent intent = new Intent(InitTravelActivity.this, TravelActivity.class);
                                             intent.putExtra("key", key);
+                                            intent.putExtra("longitude", String.valueOf(longitude));
+                                            intent.putExtra("latitude", String.valueOf(latitude) );
                                             finish();
                                             startActivity(intent);
                                             //startActivity(new Intent(InitTravelActivity.this, TravelActivity.class));
@@ -161,5 +179,41 @@ public class InitTravelActivity extends AppCompatActivity {
     private boolean isLocationEnabled() {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            latitude = mLastLocation.getLatitude();
+            longitude =  mLastLocation.getLongitude();
+        } else {
+            Toast.makeText(this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }
