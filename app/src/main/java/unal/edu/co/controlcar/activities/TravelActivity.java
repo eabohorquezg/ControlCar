@@ -19,6 +19,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -72,6 +73,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     private double latitude;
 
     AlertDialog.Builder alert_dialog;
+    private Dialog tmpdialog;
 
     private SupportMapFragment mapFragment;
     private GoogleMap mMap;
@@ -102,6 +104,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         textZ = (TextView) findViewById(R.id.textZ);
 
         //turn on speedometer using GPS
+        //checkLocation();
         turnOnGps();
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -127,6 +130,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     }
 
     public void showAlertDialog( String description, String date ){
+        if (tmpdialog!=null)tmpdialog.dismiss();
         alert_dialog.setTitle("Conduce con cuidado!");
         alert_dialog.setIcon(R.drawable.warning);
         alert_dialog.setMessage("Se registro un "+description+"\n"+date);
@@ -136,7 +140,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
                 dialog.cancel();
             }
         });
-        alert_dialog.show();
+        tmpdialog =  alert_dialog.show();
     }
 
     SensorEventListener accelListener = new SensorEventListener() {
@@ -170,6 +174,8 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
             }
         }
     };
+
+
 
     //Velocimeter
     private void turnOnGps() {
