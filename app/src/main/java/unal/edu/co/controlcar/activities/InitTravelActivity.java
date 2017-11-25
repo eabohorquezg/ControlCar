@@ -72,14 +72,12 @@ public class InitTravelActivity extends AppCompatActivity implements
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
                     .build();
         }
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
 
         mGoogleApiClient.connect();
 
@@ -114,8 +112,14 @@ public class InitTravelActivity extends AppCompatActivity implements
                                             Calendar today = Calendar.getInstance();
                                             travel.setInitHour(dateFormat.format(today.getTime()));
                                             travel.setEndTime("");
-                                            travel.setInitLatitude(latitude);
-                                            travel.setInitLongitude(longitude);
+                                            if(latitude != null && longitude != null){
+                                                travel.setInitLatitude(latitude);
+                                                travel.setInitLongitude(longitude);
+                                            }
+                                            else{
+                                                travel.setInitLatitude(0.0);
+                                                travel.setInitLongitude(0.0);
+                                            }
                                             travel.setPlate(edtPlate.getText().toString().toUpperCase());
                                             travel.setDriverName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                                             String key = FirebaseDatabase.getInstance().getReference().child("Travels").push().getKey();
@@ -123,8 +127,14 @@ public class InitTravelActivity extends AppCompatActivity implements
                                             FirebaseDatabase.getInstance().getReference().child("Travels").child(key).setValue(travel);
                                             Intent intent = new Intent(InitTravelActivity.this, TravelActivity.class);
                                             intent.putExtra("key", key);
-                                            intent.putExtra("longitude", String.valueOf(longitude));
-                                            intent.putExtra("latitude", String.valueOf(latitude) );
+                                            if(latitude != null && longitude != null){
+                                                intent.putExtra("longitude", String.valueOf(longitude));
+                                                intent.putExtra("latitude", String.valueOf(latitude) );
+                                            }
+                                            else{
+                                                intent.putExtra("longitude", "0.0");
+                                                intent.putExtra("latitude", "0.0" );
+                                            }
                                             finish();
                                             startActivity(intent);
                                             //startActivity(new Intent(InitTravelActivity.this, TravelActivity.class));
