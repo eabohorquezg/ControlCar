@@ -190,7 +190,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
                 dateFormat.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
                 Calendar today = Calendar.getInstance();
                 double velocity = speedometer.getCurrentSpeed();
-                Alert alert = new Alert(dateFormat.format(today.getTime()), description, velocity, latitude, longitude, abs((int) x));
+                Alert alert = new Alert(dateFormat.format(today.getTime()), description, velocity, latitude, longitude, (int)abs((Math.ceil(x))));
                 FirebaseDatabase.getInstance().getReference().child("Travels").
                         child(getIntent().getExtras().getString("key")).child("Alerts").push().setValue(alert);
                 showAlertDialog(description, alert.getInitHour());
