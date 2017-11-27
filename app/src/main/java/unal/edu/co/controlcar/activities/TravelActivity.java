@@ -75,6 +75,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     private TextView latitudeValue;
     private float currentSpeed = 0.0f;
     private boolean acceleration;
+    private FirebaseDatabase database;
 
     //variables for ubication
     private static DecimalFormat df2 = new DecimalFormat(".#######");
@@ -90,6 +91,8 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel);
+
+        database = FirebaseDatabase.getInstance();
 
         alert_dialog = new AlertDialog.Builder(this);
 
@@ -121,6 +124,9 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         //turn on speedometer using GPS
         //checkLocation();
         turnOnGps();
+
+        //Enable location tracker
+        locationTracker();
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -194,6 +200,31 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
                 acceleration = true;
         }
     };
+
+
+    public void locationTracker(){
+        DatabaseReference ref = database.getReference("Travels/" + getIntent().getExtras().getString("key")  + "/requestLocation" );
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                int r = dataSnapshot.getValue(Integer.class);
+                System.out.println(r);
+
+                FirebaseDatabase.getInstance().getReference().child("Travels").
+                        child(getIntent().getExtras().getString("key")).child("curLat").setValue(latitudeValue.getText());
+                FirebaseDatabase.getInstance().getReference().child("Travels").
+                        child(getIntent().getExtras().getString("key")).child("curLong").setValue(longitudeValue.getText());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+    }
 
 
     //Velocimeter

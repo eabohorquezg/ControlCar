@@ -13,6 +13,33 @@ public class Travel {
     private double initLongitude;
     private String plate;
     private String driverName;
+    private int requestLocation;
+    private String curLong;
+    private String curLat;
+
+    public int getRequestLocation() {
+        return requestLocation;
+    }
+
+    public String getCurLong() {
+        return curLong;
+    }
+
+    public String getCurLat() {
+        return curLat;
+    }
+
+    public void setRequestLocation(int requestLocation) {
+        this.requestLocation = requestLocation;
+    }
+
+    public void setCurLong(String curLong) {
+        this.curLong = curLong;
+    }
+
+    public void setCurLat(String curLat) {
+        this.curLat = curLat;
+    }
 
     public String getEndTime() {
         return endTime;
