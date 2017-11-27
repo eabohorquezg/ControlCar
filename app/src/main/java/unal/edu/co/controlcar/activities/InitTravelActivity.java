@@ -115,14 +115,12 @@ public class InitTravelActivity extends AppCompatActivity implements
                                             if(latitude != null && longitude != null){
                                                 travel.setInitLatitude(latitude);
                                                 travel.setInitLongitude(longitude);
-                                                travel.setCurLat(Double.toString(latitude));
-                                                travel.setCurLong(Double.toString(longitude));
+                                                travel.setCurLocation(Double.toString(latitude) + "," + Double.toString(longitude));
                                             }
                                             else{
                                                 travel.setInitLatitude(4.7110);
                                                 travel.setInitLongitude(-74.0721);
-                                                travel.setCurLat("4.7110");
-                                                travel.setCurLong("-74.0721");
+                                                travel.setCurLocation("4.7110,-74.0721");
                                             }
                                             travel.setPlate(edtPlate.getText().toString().toUpperCase());
                                             travel.setDriverName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());

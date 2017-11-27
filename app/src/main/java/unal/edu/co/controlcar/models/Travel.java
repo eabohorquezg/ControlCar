@@ -14,31 +14,22 @@ public class Travel {
     private String plate;
     private String driverName;
     private int requestLocation;
-    private String curLong;
-    private String curLat;
+    private String curLocation;
 
     public int getRequestLocation() {
         return requestLocation;
-    }
-
-    public String getCurLong() {
-        return curLong;
-    }
-
-    public String getCurLat() {
-        return curLat;
     }
 
     public void setRequestLocation(int requestLocation) {
         this.requestLocation = requestLocation;
     }
 
-    public void setCurLong(String curLong) {
-        this.curLong = curLong;
+    public String getCurLocation() {
+        return curLocation;
     }
 
-    public void setCurLat(String curLat) {
-        this.curLat = curLat;
+    public void setCurLocation(String curLocation) {
+        this.curLocation = curLocation;
     }
 
     public String getEndTime() {
