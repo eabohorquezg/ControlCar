@@ -213,9 +213,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
                 System.out.println(r);
 
                 FirebaseDatabase.getInstance().getReference().child("Travels").
-                        child(getIntent().getExtras().getString("key")).child("curLat").setValue(latitudeValue.getText());
-                FirebaseDatabase.getInstance().getReference().child("Travels").
-                        child(getIntent().getExtras().getString("key")).child("curLong").setValue(longitudeValue.getText());
+                        child(getIntent().getExtras().getString("key")).child("curLocation").setValue(latitudeValue.getText() + "," + longitudeValue.getText());
             }
 
             @Override
