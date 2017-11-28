@@ -124,7 +124,7 @@ public class InitTravelActivity extends AppCompatActivity implements
                                             }
                                             travel.setPlate(edtPlate.getText().toString().toUpperCase());
                                             travel.setDriverName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-                                            travel.setRequestLocation(1);
+                                            //travel.setRequestLocation(1); //Send location on request
                                             String key = FirebaseDatabase.getInstance().getReference().child("Travels").push().getKey();
                                             travel.setId(key);
                                             FirebaseDatabase.getInstance().getReference().child("Travels").child(key).setValue(travel);

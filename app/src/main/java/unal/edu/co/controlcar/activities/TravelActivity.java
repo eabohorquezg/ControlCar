@@ -122,11 +122,11 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         latitudeValue.setText(getIntent().getExtras().getString("latitude"));
 
         //turn on speedometer using GPS
-        //checkLocation();
+        //checkLocation(); //Send location on request
         turnOnGps();
 
         //Enable location tracker
-        locationTracker();
+        //locationTracker();
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -201,16 +201,13 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         }
     };
 
-
+/* Send location on request
     public void locationTracker(){
         DatabaseReference ref = database.getReference("Travels/" + getIntent().getExtras().getString("key")  + "/requestLocation" );
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                int r = dataSnapshot.getValue(Integer.class);
-                System.out.println(r);
 
                 FirebaseDatabase.getInstance().getReference().child("Travels").
                         child(getIntent().getExtras().getString("key")).child("curLocation").setValue(latitudeValue.getText() + "," + longitudeValue.getText());
@@ -223,7 +220,7 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         });
 
     }
-
+*/
 
     //Velocimeter
     private void turnOnGps() {
@@ -268,6 +265,10 @@ public class TravelActivity extends AppCompatActivity implements LocationListene
         LatLng current = new LatLng(latitude, longitude);
         if(mMap != null)
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 17));
+
+
+        FirebaseDatabase.getInstance().getReference().child("Travels").
+                child(getIntent().getExtras().getString("key")).child("curLocation").setValue(latitudeValue.getText() + "," + longitudeValue.getText());
     }
 
     @Override

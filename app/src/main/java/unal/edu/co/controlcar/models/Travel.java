@@ -13,9 +13,10 @@ public class Travel {
     private double initLongitude;
     private String plate;
     private String driverName;
-    private int requestLocation;
+    //private int requestLocation; //Send location on request
     private String curLocation;
 
+    /*Send location on request
     public int getRequestLocation() {
         return requestLocation;
     }
@@ -23,6 +24,7 @@ public class Travel {
     public void setRequestLocation(int requestLocation) {
         this.requestLocation = requestLocation;
     }
+    */
 
     public String getCurLocation() {
         return curLocation;
